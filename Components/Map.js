@@ -1,4 +1,4 @@
-import { View, Text, Platform } from 'react-native'
+import { Platform } from 'react-native'
 import React, { useContext, useEffect, useRef } from 'react'
 import tw from 'twrnc';
 import MapView, { Marker } from 'react-native-maps';
@@ -15,7 +15,19 @@ const Map = () => {
 
     useEffect(() => {
         if(appContext?.destination?.location?.lat && appContext?.origin?.location?.lat) {
-            console.log({"origin": appContext?.origin, "destination": appContext?.destination});
+            const getTravelTime = async () => {
+                fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${appContext?.origin?.description}&destinations=${appContext?.destination?.description}&key=${GOOGLE_MAPS_APIKEY}`)
+                .then((res) => res.json())
+                .then((res) => {
+                    appContext.setTravelTimeInfo(res.rows[0].elements[0])
+                })
+            }
+            getTravelTime();
+        }
+    }, [appContext?.origin?.location, appContext?.destination?.location, GOOGLE_MAPS_APIKEY])
+
+    useEffect(() => {
+        if(appContext?.destination?.location?.lat && appContext?.origin?.location?.lat) {
 
             // zoom and fit to marker lines on map
             if(Platform.OS === 'ios') {
@@ -24,9 +36,17 @@ const Map = () => {
                     edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
                 })
             } else {
-                mapRef.current.fitToCoordinates(['origin', 'destination'], {
+                mapRef.current.fitToCoordinates([{
+                    latitude: appContext?.origin?.location?.lat,
+                    longitude: appContext?.origin?.location?.lng,
+                  },
+                  {
+                    latitude: appContext?.destination?.location?.lat,
+                    longitude: appContext?.destination?.location?.lng,
+                  }
+                ], {
                     animated: true,
-                    edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }
+                    edgePadding: { top: 50, right: 30, bottom: 30, left: 30 }
                 })
             }
         }
@@ -44,8 +64,8 @@ const Map = () => {
             }}
         >
             {
-                appContext.origin.description 
-                && appContext.destination.description 
+                appContext?.origin?.description 
+                && appContext?.destination?.description 
                 && <MapViewDirections 
                     origin={appContext.origin.description}
                     destination={appContext.destination.description}

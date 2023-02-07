@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { createContext, useContext } from 'react'
+import React, { useContext } from 'react'
 import tw from 'twrnc';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import AppContext from '../Store/AppContext';

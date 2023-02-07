@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image } from 'react-native'
+import { View, SafeAreaView, Image } from 'react-native'
 import React, { useContext } from 'react'
 import tw from 'twrnc';
 import NavOptions from '../Components/NavOptions';
