@@ -7,14 +7,9 @@ export const AppConsumer = AppContext.Consumer;
 
 export const AppProvider = (props) => {
     const [loading, setLoading] = useState(false);
-    const [origin, setOrigin] = useState({
-        location: {},
-        description: null
-    });
-    const [destination, setDestination] = useState({
-        location: {},
-        description: null
-    });
+    const [origin, setOrigin] = useState(null);
+    const [destination, setDestination] = useState(null);
+    const [travelTimeInfo, setTravelTimeInfo] = useState(null);
     const [splashLoading, setSplashLoading] = useState(false);
 
 
@@ -31,7 +26,9 @@ export const AppProvider = (props) => {
         origin, 
         setOrigin,
         destination, 
-        setDestination
+        setDestination,
+        travelTimeInfo, 
+        setTravelTimeInfo
     };
     
     return <AppContext.Provider value={{ ...appData }} >
